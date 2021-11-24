@@ -1,32 +1,33 @@
 package org.jax.biodownload;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BioDownloaderBuilder {
+
+    private static final Logger logger = LoggerFactory.getLogger(BioDownloaderBuilder.class);
+
     private final List<DownloadableResource> resources;
-    private String path;
+    private final Path destinationPath;
     private boolean overwrite = false;
 
 
-    public BioDownloaderBuilder() {
+    public BioDownloaderBuilder(String destinationPath) {
         this.resources = new LinkedList<>();
+        this.destinationPath = Paths.get(destinationPath);
     }
 
     /**
-     * Set path where the file(s) will be downloaded
-     * @param path
-     * @return
-     */
-    public BioDownloaderBuilder path(String path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
-     * By default set to False. If True file are overwritten if already existing.
-     * @param overwrite
-     * @return
+     * Set the overwrite flag
+     * @param overwrite By default set to False. If True file are overwritten if already existing.
+     * @return a builder instance
      */
     public BioDownloaderBuilder overwrite(boolean overwrite) {
         this.overwrite = overwrite;
@@ -35,7 +36,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Go JSON
-     * @return
+     * @return a builder instance
      */
     public BioDownloaderBuilder goJson() {
         resources.add(DownloadableResource.GO_JSON);
@@ -44,27 +45,43 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Go OBO
-     * @return
+     * @return a builder instance
      */
     public BioDownloaderBuilder goObo() {
         resources.add(DownloadableResource.GO_OBO);
         return this;
     }
 
+    /**
+     * Download all Go files
+     * @return a builder instance
+     */
     public BioDownloaderBuilder go() {
         return goJson().goObo();
     }
 
+    /**
+     * Download MedGene2MIM file
+     * @return a builder instance
+     */
     public BioDownloaderBuilder medgene2MIM() {
         resources.add(DownloadableResource.MEDGENE_2MIM);
         return this;
     }
 
+    /**
+     * Download Prosite file
+     * @return a builder instance
+     */
     public BioDownloaderBuilder proSite() {
         resources.add(DownloadableResource.PROSITE);
         return this;
     }
 
+    /**
+     * Download Hgnc file
+     * @return a builder instance
+     */
     public BioDownloaderBuilder hgnc() {
         resources.add(DownloadableResource.HGNC);
         return this;
@@ -158,38 +175,49 @@ public class BioDownloaderBuilder {
 
     /**
      * Download file from given URL and save it with the given name
-     * @param name
-     * @param url
-     * @return
+     * @param name Name of file to be downloaded to
+     * @param urlStr URL string of source file
+     * @return a builder instance
      */
-    public BioDownloaderBuilder custom(String name, String url) {
+    public BioDownloaderBuilder custom(String name, String urlStr) {
+        URL url = DownloadableResource.createURL(urlStr);
         resources.add(new DownloadableResource(name, url));
         return this;
     }
 
     /**
      * Build Downloader
-     * @return
+     * @return a {@link IBioDownloader} object
      */
     public IBioDownloader build() {
         validate();
-        return new BioDownloaderImpl(resources, path, overwrite);
+        return new BioDownloaderImpl(resources, destinationPath, overwrite);
     }
 
     /**
      * Validation of the Builder
-     * @throws IllegalStateException
+     * @throws IllegalStateException If the validation fails we throw an {@link IllegalStateException}
      */
     private void validate() throws IllegalStateException {
         StringBuilder sb = new StringBuilder();
         if (resources.size() == 0) {
             sb.append("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.");
         }
-        if (path == null) {
-            sb.append("Path must not be null.");
+        for (DownloadableResource resource : resources) {
+        	if (resource.getUrl() == null)
+        		sb.append("A URL was malformed, look at the error log.");
+        }
+        if (destinationPath.toFile().isDirectory()) {
+            sb.append("Path must be a directory");
+        }
+        if (destinationPath.toFile().canWrite()) {
+            sb.append("Directory must be writable.");
         }
         if (sb.length() > 0) {
+            logger.error(sb.toString());
             throw new IllegalStateException(sb.toString());
+        } else {
+            logger.info("The builder validation is successful.");
         }
     }
 
