@@ -1,4 +1,4 @@
-package org.jax.obodownload;
+package org.jax.biodownload;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,54 +10,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Command to download the {@code hp.obo} and {@code phenotype.hpoa} files that
- * we will need to run the LIRICAL approach.
+ * BioDownload implementation used to download from {@link DownloadableResource}
  * @author Peter N Robinson
- * @author Baha El Kassaby
  */
-class HpoDownloaderImpl implements IOboDownloader {
-    private static final Logger logger = LoggerFactory.getLogger(HpoDownloaderImpl.class);
+class BioDownloaderImpl implements IBioDownloader {
+    private static final Logger logger = LoggerFactory.getLogger(BioDownloaderImpl.class);
+
+    /** List of downloadable resources */
+    private final List<DownloadableResource> resources;
     /** Directory to which we will download the files. */
     private final String downloadDirectory;
     /** If true, download new version whether or not the file is already present. */
     private final boolean overwrite;
 
-    /**
-     * Enum of Names and Urls for HPO files
-     */
-    enum HpoName {
-        HP_OBO("hp.obo", "https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo"),
-        HP_ANNOTATION("phenotype.hpoa", "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa"),
-        GENE_INFO("Homo_sapiens_gene_info.gz", "ftp://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz"),
-        MIM2GENE_MEDGEN("mim2gene_medgen", "ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen");
-
-        private final String name;
-        private final String url;
-
-        HpoName(String name, String url) {
-            this.name = name;
-            this.url = url;
-        }
-        public String getName() {
-            return this.name;
-        }
-        public String getUrl() {
-            return this.url;
-        }
-    }
-
-    /**
-     * Default constructor
-     * @param path directory where file is downloaded
-     */
-    HpoDownloaderImpl(String path){
-        this(path,false);
-    }
-
-    HpoDownloaderImpl(String path, boolean overwrite){
+    BioDownloaderImpl(List<DownloadableResource> resources, String path, boolean overwrite) {
+        this.resources = resources;
         this.downloadDirectory = path;
         this.overwrite = overwrite;
-        logger.info("overwrite=" + overwrite);
     }
 
     /**
@@ -67,8 +36,9 @@ class HpoDownloaderImpl implements IOboDownloader {
     public List<File> download() throws FileDownloadException {
         List<File> downloadedFiles = new LinkedList<>();
         int numberOfFiles = 0;
-        for(HpoName hpo : HpoName.values()) {
-            File file = downloadFileIfNeeded(hpo.name, hpo.url);
+
+        for (DownloadableResource resource : resources) {
+            File file = downloadFileIfNeeded(resource.getName(), resource.getUrl());
             downloadedFiles.add(file);
             numberOfFiles++;
             System.out.printf("[INFO] Downloaded \"%s\" file to \"%s\" (%d files were previously downloaded)\n",

@@ -1,4 +1,4 @@
-package org.jax.obodownload;
+package org.jax.biodownload;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;

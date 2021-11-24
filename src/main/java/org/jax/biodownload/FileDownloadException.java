@@ -1,4 +1,4 @@
-package org.jax.obodownload;
+package org.jax.biodownload;
 
 public class FileDownloadException extends Exception {
     private static final long serialVersionUID = 1L;

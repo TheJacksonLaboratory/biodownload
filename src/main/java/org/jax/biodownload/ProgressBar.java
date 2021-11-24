@@ -1,4 +1,4 @@
-package org.jax.obodownload;
+package org.jax.biodownload;
 
 /**
  * A simple status bar that only work on terminals where "\r" has an affect.
