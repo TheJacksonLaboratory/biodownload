@@ -1,4 +1,4 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 import java.io.File;
 import java.util.List;

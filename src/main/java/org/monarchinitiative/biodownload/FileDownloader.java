@@ -1,4 +1,4 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;

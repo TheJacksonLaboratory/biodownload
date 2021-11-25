@@ -1,9 +1,8 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -204,8 +203,8 @@ public class BioDownloaderBuilder {
             sb.append("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.");
         }
         for (DownloadableResource resource : resources) {
-        	if (resource.getUrl() == null)
-        		sb.append("A URL was malformed, look at the error log.");
+            if (resource.getUrl() == null)
+                sb.append("URL for resource \"").append(resource.getName()).append("\" was malformed.");
         }
         if (destinationPath.toFile().isDirectory()) {
             sb.append("Path must be a directory");

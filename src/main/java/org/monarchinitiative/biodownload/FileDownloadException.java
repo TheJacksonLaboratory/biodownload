@@ -1,4 +1,4 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 public class FileDownloadException extends Exception {
     private static final long serialVersionUID = 1L;

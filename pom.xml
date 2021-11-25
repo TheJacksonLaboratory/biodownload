@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jax.biodownload</groupId>
+    <groupId>org.monarchinitiative.biodownload</groupId>
     <artifactId>biodownload</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>obodownload</name>
+    <name>biodownload</name>
     <url>https://github.com/TheJacksonLaboratory/biodownload</url>
     <dependencies>
         <dependency>

@@ -1,4 +1,4 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 /**
  * A simple status bar that only work on terminals where "\r" has an affect.

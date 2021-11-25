@@ -1,4 +1,4 @@
-package org.jax.biodownload;
+package org.monarchinitiative.biodownload;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
