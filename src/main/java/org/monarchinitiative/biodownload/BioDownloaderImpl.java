@@ -45,15 +45,15 @@ class BioDownloaderImpl implements IBioDownloader {
 
         for (DownloadableResource resource : resources) {
             File file = downloadFileIfNeeded(downloadDirectory.resolve(resource.getName()), resource.getUrl());
-            downloadedFiles.add(file);
             if (file != null) {
+                downloadedFiles.add(file);
                 System.out.printf("[INFO] Downloaded \"%s\" file to \"%s\" (%d files were previously downloaded)\n",
                         file.getName(), downloadDirectory.toString(), numberOfFiles);
+                numberOfFiles++;
             } else {
                 System.out.printf("[INFO] No file with the name \"%s\" downloaded to \"%s\" (%d files were previously downloaded)\n",
                         resource.getName(), downloadDirectory.toString(), numberOfFiles);
             }
-            numberOfFiles++;
         }
         return downloadedFiles;
     }

@@ -54,7 +54,7 @@ public class BioDownloaderTest {
         try {
             IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(false).custom("hp.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
             List<File> downloadedFile = bioDownloader.download();
-            Assertions.assertTrue(downloadedFile.get(0) == null);
+            Assertions.assertTrue(downloadedFile.isEmpty());
         } catch (MalformedURLException | FileDownloadException e) {
             e.printStackTrace();
         }
