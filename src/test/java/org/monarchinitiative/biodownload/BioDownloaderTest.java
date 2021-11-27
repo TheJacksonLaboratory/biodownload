@@ -2,7 +2,6 @@ package org.monarchinitiative.biodownload;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class BioDownloaderTest {
     }
 
     @Test
-    public void testHpoDownload() throws FileDownloadException {
+    public void testHpoOverwriteDownload() throws FileDownloadException {
         IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(true).hpoJson().build();
         List<File> files = bioDownloader.download();
         Assertions.assertEquals("hp.json", files.get(0).getName());
@@ -36,7 +35,7 @@ public class BioDownloaderTest {
                 () -> new BioDownloaderBuilder(resourcePath).custom("test.json", null).build(),
                 "Expected custom() to throw, but it didn't"
         );
-        Assertions.assertTrue(thrown.getMessage().contains("URL must not be null"));
+        Assertions.assertTrue(thrown.getMessage().contains("Url must not be null"));
     }
 
     @Test
@@ -59,6 +58,19 @@ public class BioDownloaderTest {
         } catch (MalformedURLException | FileDownloadException e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void testNewNameFileDownload() {
+        try {
+            IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(true).custom("hp_new.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
+            List<File> downloadedFile = bioDownloader.download();
+            Assertions.assertEquals("hp_new.json", downloadedFile.get(0).getName());
+        } catch (MalformedURLException | FileDownloadException e) {
+            e.printStackTrace();
+        }
+        // clean up file
+        boolean deleted = resourcePath.resolve("hp_new.json").toFile().delete();
+        Assertions.assertTrue(deleted);
     }
 }
