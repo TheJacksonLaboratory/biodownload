@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Builder class used to build an IBioDownloader object
+ */
 public class BioDownloaderBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(BioDownloaderBuilder.class);
@@ -18,9 +20,9 @@ public class BioDownloaderBuilder {
     private boolean overwrite = false;
 
 
-    public BioDownloaderBuilder(String destinationPath) {
+    public BioDownloaderBuilder(Path destinationPath) {
         this.resources = new LinkedList<>();
-        this.destinationPath = Paths.get(destinationPath);
+        this.destinationPath = destinationPath;
     }
 
     /**
@@ -175,11 +177,10 @@ public class BioDownloaderBuilder {
     /**
      * Download file from given URL and save it with the given name
      * @param name Name of file to be downloaded to
-     * @param urlStr URL string of source file
+     * @param url URL of source file
      * @return a builder instance
      */
-    public BioDownloaderBuilder custom(String name, String urlStr) {
-        URL url = DownloadableResource.createURL(urlStr);
+    public BioDownloaderBuilder custom(String name, URL url) {
         resources.add(new DownloadableResource(name, url));
         return this;
     }
@@ -200,17 +201,13 @@ public class BioDownloaderBuilder {
     private void validate() throws IllegalStateException {
         StringBuilder sb = new StringBuilder();
         if (resources.size() == 0) {
-            sb.append("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.");
+            sb.append("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.\n");
         }
-        for (DownloadableResource resource : resources) {
-            if (resource.getUrl() == null)
-                sb.append("URL for resource \"").append(resource.getName()).append("\" was malformed.");
+        if (!destinationPath.toFile().isDirectory()) {
+            sb.append("Path must be a directory.\n");
         }
-        if (destinationPath.toFile().isDirectory()) {
-            sb.append("Path must be a directory");
-        }
-        if (destinationPath.toFile().canWrite()) {
-            sb.append("Directory must be writable.");
+        if (!destinationPath.toFile().canWrite()) {
+            sb.append("Directory must be writable.\n");
         }
         if (sb.length() > 0) {
             logger.error(sb.toString());

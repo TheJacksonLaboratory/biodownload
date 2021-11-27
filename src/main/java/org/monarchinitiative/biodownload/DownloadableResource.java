@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Class used to store a downloadable resource and with all the resources objects that can be downloaded.
@@ -23,7 +24,7 @@ public class DownloadableResource {
     public static DownloadableResource HGNC = new DownloadableResource("hgnc_complete_set.txt", createURL("ftp://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/hgnc_complete_set.txt"));
     public static DownloadableResource GO_GAF = new DownloadableResource("goa_human.gaf", createURL("http://geneontology.org/gene-associations/goa_human.gaf"));
     public static DownloadableResource GO_GAFGZ = new DownloadableResource("goa_human.gaf.gz", createURL("http://geneontology.org/gene-associations/goa_human.gaf.gz"));
-    public static DownloadableResource MONDO_JSON = new DownloadableResource("mondo.json", createURL(".http://purl.obolibrary.org/mondo/mondo.json"));
+    public static DownloadableResource MONDO_JSON = new DownloadableResource("mondo.json", createURL("http://purl.obolibrary.org/mondo/mondo.json"));
     public static DownloadableResource MONDO_OWL = new DownloadableResource("mondo.owl", createURL("http://purl.obolibrary.org/mondo/mondo.owl"));
     public static DownloadableResource ECTO_JSON = new DownloadableResource("ecto.json", createURL("https://raw.githubusercontent.com/EnvironmentOntology/environmental-exposure-ontology/master/ecto.json"));
     public static DownloadableResource ECTO_OWL = new DownloadableResource("ecto.owl", createURL("https://raw.githubusercontent.com/EnvironmentOntology/environmental-exposure-ontology/master/ecto.owl"));
@@ -41,8 +42,8 @@ public class DownloadableResource {
      * @param url {@link URL} of source file
      */
     public DownloadableResource(String name, URL url) {
-        this.name = name;
-        this.url = url;
+        this.name = Objects.requireNonNull(name, "Name must not be null");
+        this.url = Objects.requireNonNull(url, "Url must not be null");
     }
 
     /**

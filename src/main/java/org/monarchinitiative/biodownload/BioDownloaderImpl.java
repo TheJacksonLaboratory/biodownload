@@ -46,9 +46,14 @@ class BioDownloaderImpl implements IBioDownloader {
         for (DownloadableResource resource : resources) {
             File file = downloadFileIfNeeded(downloadDirectory.resolve(resource.getName()), resource.getUrl());
             downloadedFiles.add(file);
+            if (file != null) {
+                System.out.printf("[INFO] Downloaded \"%s\" file to \"%s\" (%d files were previously downloaded)\n",
+                        file.getName(), downloadDirectory.toString(), numberOfFiles);
+            } else {
+                System.out.printf("[INFO] No file with the name \"%s\" downloaded to \"%s\" (%d files were previously downloaded)\n",
+                        resource.getName(), downloadDirectory.toString(), numberOfFiles);
+            }
             numberOfFiles++;
-            System.out.printf("[INFO] Downloaded \"%s\" file to \"%s\" (%d files were previously downloaded)\n",
-                    file.getName(), downloadDirectory.toString(), numberOfFiles);
         }
         return downloadedFiles;
     }
@@ -56,13 +61,13 @@ class BioDownloaderImpl implements IBioDownloader {
 
     private File downloadFileIfNeeded(Path filePath, URL url) throws FileDownloadException {
         File f = filePath.toFile();
-        if (f.isFile() && (! overwrite)) {
+        if (f.isFile() && (!overwrite)) {
             logger.trace(String.format("Cowardly refusing to download %s since we found it at %s",
                     f.getName(),
                     f.getAbsolutePath()));
             return null;
         }
-        FileDownloader downloader=new FileDownloader();
+        FileDownloader downloader = new FileDownloader();
         try {
             return downloader.copyURLToFile(url, new File(f.getAbsolutePath()));
         } catch (FileDownloadException e) {
