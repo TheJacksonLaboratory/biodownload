@@ -1,3 +1,5 @@
+![CI CD](https://github.com/TheJacksonLaboratory/biodownload/actions/workflows/cicd.yml/badge.svg)
+
 # OboDownload
 OboDownload is a small utility library used at the Robinson lab to download HPO, MONDO, UBERON, GO ontologies.   
 
