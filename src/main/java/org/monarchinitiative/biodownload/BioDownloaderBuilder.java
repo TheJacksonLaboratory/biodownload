@@ -27,6 +27,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Set the overwrite flag
+     *
      * @param overwrite By default set to False. If True file are overwritten if already existing.
      * @return a builder instance
      */
@@ -37,6 +38,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Go JSON
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder goJson() {
@@ -46,6 +48,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Go OBO
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder goObo() {
@@ -55,6 +58,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download all Go files
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder go() {
@@ -63,6 +67,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download MedGene2MIM file
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder medgene2MIM() {
@@ -72,6 +77,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Prosite file
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder proSite() {
@@ -81,6 +87,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Download Hgnc file
+     *
      * @return a builder instance
      */
     public BioDownloaderBuilder hgnc() {
@@ -109,10 +116,6 @@ public class BioDownloaderBuilder {
         return this;
     }
 
-    public BioDownloaderBuilder mondo() {
-        return mondoOwl().mondoJson();
-    }
-
     public BioDownloaderBuilder ectoJson() {
         resources.add(DownloadableResource.ECTO_JSON);
         return this;
@@ -121,10 +124,6 @@ public class BioDownloaderBuilder {
     public BioDownloaderBuilder ectoOwl() {
         resources.add(DownloadableResource.ECTO_OWL);
         return this;
-    }
-
-    public BioDownloaderBuilder ecto() {
-        return ectoOwl().ectoJson();
     }
 
     public BioDownloaderBuilder maxoJson() {
@@ -142,10 +141,6 @@ public class BioDownloaderBuilder {
         return this;
     }
 
-    public BioDownloaderBuilder maxo() {
-        return maxoOwl().maxoObo().maxoJson();
-    }
-
     public BioDownloaderBuilder hpoJson() {
         resources.add(DownloadableResource.HP_JSON);
         return this;
@@ -154,10 +149,6 @@ public class BioDownloaderBuilder {
     public BioDownloaderBuilder hpoObo() {
         resources.add(DownloadableResource.HP_OBO);
         return this;
-    }
-
-    public BioDownloaderBuilder hpo() {
-        return hpoObo().hpoJson();
     }
 
     public BioDownloaderBuilder hpAnnotation() {
@@ -170,14 +161,11 @@ public class BioDownloaderBuilder {
         return this;
     }
 
-    public BioDownloaderBuilder all() {
-        return go().goGaf().goGafGz().hpo().mondo().ecto().hgnc().maxo().medgene2MIM().proSite().hpAnnotation().geneInfo();
-    }
-
     /**
      * Download file from given URL and save it with the given name
+     *
      * @param name Name of file to be downloaded to
-     * @param url URL of source file
+     * @param url  URL of source file
      * @return a builder instance
      */
     public BioDownloaderBuilder custom(String name, URL url) {
@@ -187,6 +175,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Build Downloader
+     *
      * @return a {@link IBioDownloader} object
      */
     public IBioDownloader build() {
@@ -196,6 +185,7 @@ public class BioDownloaderBuilder {
 
     /**
      * Validation of the Builder
+     *
      * @throws IllegalStateException If the validation fails we throw an {@link IllegalStateException}
      */
     private void validate() throws IllegalStateException {
@@ -216,6 +206,4 @@ public class BioDownloaderBuilder {
             logger.info("The builder validation is successful.");
         }
     }
-
-
 }
