@@ -60,7 +60,6 @@ class BioDownloaderImpl implements IBioDownloader {
         return downloadedFiles;
     }
 
-
     private Optional<File> downloadFileIfNeeded(Path filePath, URL url) throws FileDownloadException {
         File f = filePath.toFile();
         if (f.isFile() && (!overwrite)) {

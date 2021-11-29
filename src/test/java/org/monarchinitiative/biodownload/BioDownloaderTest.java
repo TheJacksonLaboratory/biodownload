@@ -29,7 +29,7 @@ public class BioDownloaderTest {
     }
 
     @Test
-    void testNullPointerExceptionFromCustom() {
+    public void testNullPointerExceptionFromCustom() {
         NullPointerException thrown = Assertions.assertThrows(
                 NullPointerException.class,
                 () -> new BioDownloaderBuilder(resourcePath).custom("test.json", null).build(),
@@ -39,7 +39,7 @@ public class BioDownloaderTest {
     }
 
     @Test
-    void testIllegalStateExceptionFromBuilder() {
+    public void testIllegalStateExceptionFromBuilder() {
         Path illegalResourcePath = Paths.get("src","test","resources", "mock.txt");
         IllegalStateException thrown = Assertions.assertThrows(
                 IllegalStateException.class,
