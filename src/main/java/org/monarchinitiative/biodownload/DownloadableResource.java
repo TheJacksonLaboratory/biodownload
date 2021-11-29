@@ -53,7 +53,7 @@ public class DownloadableResource {
      * @param urlStr URL string
      * @return a {@link URL} or null if malformed
      */
-    public static URL createURL(String urlStr) {
+    private static URL createURL(String urlStr) {
         try {
             return createURLExc(urlStr);
         } catch (MalformedURLException mue) {
@@ -69,7 +69,7 @@ public class DownloadableResource {
      * @return a {@link URL}
      * @throws MalformedURLException exception
      */
-    public static URL createURLExc(String urlStr) throws MalformedURLException {
+    private static URL createURLExc(String urlStr) throws MalformedURLException {
         URL url = new URL(urlStr);
         logger.debug("Created url from {}: {}", urlStr, url);
         return url;
