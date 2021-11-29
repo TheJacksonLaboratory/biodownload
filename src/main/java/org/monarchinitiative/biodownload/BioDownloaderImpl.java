@@ -49,11 +49,11 @@ class BioDownloaderImpl implements IBioDownloader {
             if (optionalFile.isPresent()){
                 File file = optionalFile.get();
                 downloadedFiles.add(file);
-                System.out.printf("[INFO] Downloaded \"%s\" file to \"%s\" (%d files were previously downloaded)\n",
+                logger.info("[INFO] Downloaded \"{}\" file to \"{}\" ({} files were previously downloaded)\n",
                         file.getName(), downloadDirectory.toString(), numberOfFiles);
                 numberOfFiles++;
             } else {
-                System.out.printf("[INFO] No file with the name \"%s\" downloaded to \"%s\" (%d files were previously downloaded)\n",
+                logger.info("[INFO] No file with the name \"{}\" downloaded to \"{}\" ({} files were previously downloaded)\n",
                         resource.getName(), downloadDirectory.toString(), numberOfFiles);
             }
         }
@@ -64,18 +64,16 @@ class BioDownloaderImpl implements IBioDownloader {
     private Optional<File> downloadFileIfNeeded(Path filePath, URL url) throws FileDownloadException {
         File f = filePath.toFile();
         if (f.isFile() && (!overwrite)) {
-            logger.trace(String.format("Cowardly refusing to download %s since we found it at %s",
+            logger.trace("Cowardly refusing to download {} since we found it at {}",
                     f.getName(),
-                    f.getAbsolutePath()));
-            return Optional.ofNullable(null);
-//            return null;
+                    f.getAbsolutePath());
+            return Optional.empty();
         }
         FileDownloader downloader = new FileDownloader();
         try {
             return Optional.ofNullable(downloader.copyURLToFile(url, new File(f.getAbsolutePath())));
         } catch (FileDownloadException e) {
-            logger.error(String.format("Error downloading %s from %s" ,f.getName(), url.toString()));
-            logger.error(e.getMessage());
+            logger.error("Error downloading {} from {}: {}" ,f.getName(), url.toString(), e.getMessage());
             throw(e);
         }
     }

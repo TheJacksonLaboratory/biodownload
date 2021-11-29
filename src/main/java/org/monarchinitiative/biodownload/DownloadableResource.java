@@ -57,7 +57,7 @@ public class DownloadableResource {
         try {
             return createURLExc(urlStr);
         } catch (MalformedURLException mue) {
-            logger.error(String.format("Malformed URL for %s", urlStr));
+            logger.error("Malformed URL for {}", urlStr);
         }
         return null;
     }
@@ -71,7 +71,7 @@ public class DownloadableResource {
      */
     public static URL createURLExc(String urlStr) throws MalformedURLException {
         URL url = new URL(urlStr);
-        logger.debug("Created url from " + urlStr + ": " + url);
+        logger.debug("Created url from {}: {}", urlStr, url);
         return url;
     }
 
