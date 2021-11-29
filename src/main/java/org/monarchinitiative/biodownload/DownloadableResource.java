@@ -38,8 +38,9 @@ public class DownloadableResource {
 
     /**
      * Constructor
+     *
      * @param name Name of file to download to
-     * @param url {@link URL} of source file
+     * @param url  {@link URL} of source file
      */
     public DownloadableResource(String name, URL url) {
         this.name = Objects.requireNonNull(name, "Name must not be null");
@@ -48,13 +49,14 @@ public class DownloadableResource {
 
     /**
      * Create a URL and return null if {@link MalformedURLException} occurs
+     *
      * @param urlStr URL string
      * @return a {@link URL} or null if malformed
      */
     public static URL createURL(String urlStr) {
         try {
             return createURLExc(urlStr);
-        } catch(MalformedURLException mue) {
+        } catch (MalformedURLException mue) {
             logger.error(String.format("Malformed URL for %s", urlStr));
         }
         return null;
@@ -62,13 +64,14 @@ public class DownloadableResource {
 
     /**
      * Create a URL and throw {@link MalformedURLException} if error occurs
+     *
      * @param urlStr URL string
      * @return a {@link URL}
      * @throws MalformedURLException exception
      */
-    public static URL createURLExc(String urlStr) throws MalformedURLException{
+    public static URL createURLExc(String urlStr) throws MalformedURLException {
         URL url = new URL(urlStr);
-        logger.debug("Created url from " + urlStr + ": "+ url);
+        logger.debug("Created url from " + urlStr + ": " + url);
         return url;
     }
 
@@ -78,5 +81,26 @@ public class DownloadableResource {
 
     public URL getUrl() {
         return url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DownloadableResource that = (DownloadableResource) o;
+        return Objects.equals(name, that.name) && Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url);
+    }
+
+    @Override
+    public String toString() {
+        return "DownloadableResource{" +
+                "name='" + name + '\'' +
+                ", url=" + url +
+                '}';
     }
 }

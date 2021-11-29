@@ -17,7 +17,7 @@ public class BioDownloaderTest {
     private Path resourcePath;
 
     @BeforeEach
-    void init() {
+    public void init() {
         resourcePath = Paths.get("src","test","resources");
     }
 
