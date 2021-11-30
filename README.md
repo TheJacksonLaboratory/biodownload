@@ -13,4 +13,3 @@ private IBioDownloader bioDownloader = new BioDownloaderBuilder("/save/directory
 // Download files
 List<File> downloadedFiles = bioDownloader.download();
 ```
-
