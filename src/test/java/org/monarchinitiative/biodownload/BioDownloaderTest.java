@@ -2,6 +2,7 @@ package org.monarchinitiative.biodownload;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -75,6 +76,7 @@ public class BioDownloaderTest {
     }
 
     @Test
+    @Disabled("Requires internet access to run")
     public void testPrositeFileDownload() {
         try {
             IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).proSite().build();
