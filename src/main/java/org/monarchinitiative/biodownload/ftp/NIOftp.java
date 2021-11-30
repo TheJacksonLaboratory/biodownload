@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
@@ -37,13 +36,13 @@ public final class NIOftp {
      * @throws FileDownloadException
      */
     public static File ftp(final URL from, File target) throws FileDownloadException {
-        File downloadedFile = null;
+        File downloadedFile;
         if (Objects.isNull(from)) {
-            throw new IllegalArgumentException("URL required for ftp source");
+            throw new FileDownloadException("URL required for ftp source");
         }
 
         if (target == null) {
-            throw new IllegalArgumentException("target required");
+            throw new FileDownloadException("target required");
         }
 
         final FileReader reader = createReader(from);
