@@ -36,13 +36,13 @@ public final class NIOftp {
      * @return file downloaded
      * @throws FileDownloadException
      */
-    public static File ftp(final URL from, final String target) throws FileDownloadException {
+    public static File ftp(final URL from, File target) throws FileDownloadException {
         File downloadedFile = null;
         if (Objects.isNull(from)) {
             throw new IllegalArgumentException("URL required for ftp source");
         }
 
-        if (target == null || target.isEmpty()) {
+        if (target == null) {
             throw new IllegalArgumentException("target required");
         }
 
@@ -50,7 +50,7 @@ public final class NIOftp {
         final FileWriter writer = createWriter(target);
 
         try {
-            logger.info("Starting ftp download from {}\n", from.toString());
+            logger.info("Starting ftp download from {}", from);
 
             ByteBuffer buffer = ByteBuffer.allocate(FTP_BUFFER_CAPACITY);
             while (reader.read(buffer) >= 0) {
@@ -62,7 +62,7 @@ public final class NIOftp {
             logger.info("Transfer completed.");
             reader.close();
             writer.close();
-            downloadedFile = new File(target);
+            downloadedFile = target;
         }
         return downloadedFile;
     }
@@ -72,8 +72,8 @@ public final class NIOftp {
         return new FileReader(from);
     }
 
-    private static FileWriter createWriter(final String target) throws FileDownloadException {
-        assert target != null && !target.isEmpty();
+    private static FileWriter createWriter(File target) throws FileDownloadException {
+        assert target != null;
         return new FileWriter(target);
     }
 }
@@ -84,7 +84,7 @@ final class FileReader {
 
     FileReader(final URL url) throws FileDownloadException {
         try {
-            this.from = Channels.newChannel(url.openStream());
+            from = Channels.newChannel(url.openStream());
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
         }
@@ -92,7 +92,7 @@ final class FileReader {
 
     int read(final ByteBuffer buffer) throws FileDownloadException {
         try {
-            return this.from.read(buffer);
+            return from.read(buffer);
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
         }
@@ -100,7 +100,7 @@ final class FileReader {
 
     void close() throws FileDownloadException {
         try {
-            Objects.requireNonNull(this.from).close();
+            Objects.requireNonNull(from).close();
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
         }
@@ -111,9 +111,9 @@ final class FileWriter {
 
     private final FileChannel target;
 
-    FileWriter(final String path) throws FileDownloadException {
+    FileWriter(File file) throws FileDownloadException {
         try {
-            this.target = FileChannel.open(Paths.get(path), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+            target = FileChannel.open(file.toPath(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
         }
@@ -121,10 +121,10 @@ final class FileWriter {
 
     void write(final ByteBuffer buffer) throws FileDownloadException {
         try {
-            this.target.write(buffer);
+            target.write(buffer);
             while (buffer.hasRemaining()) {
                 buffer.compact();
-                this.target.write(buffer);
+                target.write(buffer);
             }
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
@@ -133,7 +133,7 @@ final class FileWriter {
 
     void close() throws FileDownloadException {
         try {
-            Objects.requireNonNull(this.target).close();
+            target.close();
         } catch (IOException e) {
             throw new FileDownloadException("ERROR: problem connecting when downloading file.", e);
         }

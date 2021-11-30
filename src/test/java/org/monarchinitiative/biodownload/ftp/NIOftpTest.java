@@ -1,6 +1,7 @@
 package org.monarchinitiative.biodownload.ftp;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.monarchinitiative.biodownload.FileDownloadException;
 
@@ -13,12 +14,15 @@ import java.nio.file.Paths;
 public class NIOftpTest {
 
     @Test
+    @Disabled("Requires internet access to run")
     public void testFTPDownload() throws FileDownloadException, MalformedURLException {
         Path resourcePath = Paths.get("src","test","resources");
-        String targetFilePath = Paths.get("src","test","resources").resolve("prosite.dat").toString();
-        NIOftp.ftp(new URL("ftp://ftp.expasy.org/databases/prosite/prosite.dat"), targetFilePath);
-        File ftpFileDownloaded = new File(targetFilePath);
-        Assertions.assertTrue(ftpFileDownloaded.exists());
+        File targetFilePath = Paths.get("src","test","resources").resolve("prosite.dat").toFile();
+
+        File downloadedFile = NIOftp.ftp(new URL("ftp://ftp.expasy.org/databases/prosite/prosite.dat"), targetFilePath);
+
+        Assertions.assertTrue(downloadedFile.exists());
+
         // clean up file
         boolean deleted = resourcePath.resolve("prosite.dat").toFile().delete();
         Assertions.assertTrue(deleted);

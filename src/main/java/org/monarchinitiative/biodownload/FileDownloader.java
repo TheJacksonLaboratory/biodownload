@@ -81,7 +81,7 @@ class FileDownloader {
         }
 
         if (src.getProtocol().equals("ftp") && options.ftp.host != null)
-            return NIOftp.ftp(src, dest.toString());
+            return NIOftp.ftp(src, dest);
         else
             return copyURLToFileThroughURL(src, dest);
     }
