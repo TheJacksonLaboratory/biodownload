@@ -2,6 +2,7 @@ package org.monarchinitiative.biodownload;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class BioDownloaderTest {
     }
 
     @Test
-    void testNullPointerExceptionFromCustom() {
+    public void testNullPointerExceptionFromCustom() {
         NullPointerException thrown = Assertions.assertThrows(
                 NullPointerException.class,
                 () -> new BioDownloaderBuilder(resourcePath).custom("test.json", null).build(),
@@ -39,7 +40,7 @@ public class BioDownloaderTest {
     }
 
     @Test
-    void testIllegalStateExceptionFromBuilder() {
+    public void testIllegalStateExceptionFromBuilder() {
         Path illegalResourcePath = Paths.get("src","test","resources", "mock.txt");
         IllegalStateException thrown = Assertions.assertThrows(
                 IllegalStateException.class,
@@ -71,6 +72,21 @@ public class BioDownloaderTest {
         }
         // clean up file
         boolean deleted = resourcePath.resolve("hp_new.json").toFile().delete();
+        Assertions.assertTrue(deleted);
+    }
+
+    @Test
+    @Disabled("Requires internet access to run")
+    public void testPrositeFileDownload() {
+        try {
+            IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).proSite().build();
+            List<File> downloadedFile = bioDownloader.download();
+            Assertions.assertEquals("prosite.dat", downloadedFile.get(0).getName());
+        } catch (FileDownloadException e) {
+            e.printStackTrace();
+        }
+        // clean up file
+        boolean deleted = resourcePath.resolve("prosite.dat").toFile().delete();
         Assertions.assertTrue(deleted);
     }
 }
