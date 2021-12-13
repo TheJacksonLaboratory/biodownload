@@ -3,6 +3,7 @@ package org.monarchinitiative.biodownload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -192,6 +193,14 @@ public class BioDownloaderBuilder {
         StringBuilder sb = new StringBuilder();
         if (resources.size() == 0) {
             sb.append("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.\n");
+        }
+        File destinationDirectoryFile = destinationPath.toFile();
+        if (! destinationDirectoryFile.exists()) {
+            logger.info("Creating new download directory at {}", destinationDirectoryFile.getAbsoluteFile());
+            boolean result = destinationDirectoryFile.mkdirs();
+            if (! result) {
+                sb.append("Could not create new destination directory for downloads");
+            }
         }
         if (!destinationPath.toFile().isDirectory()) {
             sb.append("Path must be a directory.\n");
