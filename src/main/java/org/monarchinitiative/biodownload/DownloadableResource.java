@@ -100,7 +100,7 @@ public class DownloadableResource {
     public String toString() {
         return "DownloadableResource{" +
                 "name='" + name + '\'' +
-                ", url=" + url.toString() +
+                ", url=" + url +
                 '}';
     }
 }

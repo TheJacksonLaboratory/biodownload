@@ -50,11 +50,11 @@ class BioDownloaderImpl implements IBioDownloader {
                 File file = optionalFile.get();
                 downloadedFiles.add(file);
                 logger.info("[INFO] Downloaded \"{}\" file to \"{}\" ({} files were previously downloaded)\n",
-                        file.getName(), downloadDirectory.toString(), numberOfFiles);
+                        file.getName(), downloadDirectory, numberOfFiles);
                 numberOfFiles++;
             } else {
                 logger.info("[INFO] No file with the name \"{}\" downloaded to \"{}\" ({} files were previously downloaded)\n",
-                        resource.getName(), downloadDirectory.toString(), numberOfFiles);
+                        resource.getName(), downloadDirectory, numberOfFiles);
             }
         }
         return downloadedFiles;
