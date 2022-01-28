@@ -7,7 +7,7 @@ package org.monarchinitiative.biodownload;
  *
  * @author <a href="mailto:manuel.holtgrewe@charite.de">Manuel Holtgrewe</a>
  */
-final class ProgressBar {
+class ProgressBar {
 
     /** smallest value */
     private final long min;
