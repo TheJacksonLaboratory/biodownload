@@ -1,16 +1,16 @@
 package org.monarchinitiative.biodownload;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BioDownloaderTest {
@@ -19,74 +19,107 @@ public class BioDownloaderTest {
 
     @BeforeEach
     public void init() {
-        resourcePath = Paths.get("src","test","resources");
+        resourcePath = Paths.get("src","test", "resources");
     }
 
     @Test
+    @Disabled("Requires internet access to run")
     public void testHpoOverwriteDownload() throws FileDownloadException {
-        IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(true).hpoJson().build();
+        BioDownloader bioDownloader = BioDownloader.builder(resourcePath).overwrite(true).hpoJson().build();
         List<File> files = bioDownloader.download();
-        Assertions.assertEquals("hp.json", files.get(0).getName());
+        assertEquals("hp.json", files.get(0).getName());
     }
 
     @Test
     public void testNullPointerExceptionFromCustom() {
-        NullPointerException thrown = Assertions.assertThrows(
+        NullPointerException thrown = assertThrows(
                 NullPointerException.class,
-                () -> new BioDownloaderBuilder(resourcePath).custom("test.json", null).build(),
+                () -> BioDownloader.builder(resourcePath).custom("test.json", null).build(),
                 "Expected custom() to throw, but it didn't"
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Url must not be null"));
+        assertTrue(thrown.getMessage().contains("Url must not be null"));
     }
 
     @Test
     public void testIllegalStateExceptionFromBuilder() {
         Path illegalResourcePath = Paths.get("src","test","resources", "mock.txt");
-        IllegalStateException thrown = Assertions.assertThrows(
+        IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
-                () -> new BioDownloaderBuilder(illegalResourcePath).custom("test.json", new URL("http://url.com")).build(),
+                () -> BioDownloader.builder(illegalResourcePath).custom("test.json", new URL("http://url.com")).build(),
                 "Expected build() to throw, but it didn't"
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Path must be a directory.\n"));
+        assertTrue(thrown.getMessage().contains("Path must be a directory."));
     }
 
     @Test
-    public void testExistingFileDownload() {
-        try {
-            IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(false).custom("hp.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
-            List<File> downloadedFile = bioDownloader.download();
-            Assertions.assertTrue(downloadedFile.isEmpty());
-        } catch (MalformedURLException | FileDownloadException e) {
-            e.printStackTrace();
-        }
+    public void testExistingFileDownload() throws Exception {
+        BioDownloader bioDownloader = BioDownloader.builder(resourcePath).overwrite(false).custom("hp.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
+        List<File> downloadedFile = bioDownloader.download();
+        assertTrue(downloadedFile.isEmpty());
     }
 
     @Test
-    public void testNewNameFileDownload() {
-        try {
-            IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).overwrite(true).custom("hp_new.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
-            List<File> downloadedFile = bioDownloader.download();
-            Assertions.assertEquals("hp_new.json", downloadedFile.get(0).getName());
-        } catch (MalformedURLException | FileDownloadException e) {
-            e.printStackTrace();
-        }
+    public void testNewNameFileDownload() throws Exception {
+        BioDownloader bioDownloader = BioDownloader.builder(resourcePath).overwrite(true).custom("hp_new.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
+        List<File> downloadedFile = bioDownloader.download();
+        assertEquals("hp_new.json", downloadedFile.get(0).getName());
+
         // clean up file
         boolean deleted = resourcePath.resolve("hp_new.json").toFile().delete();
-        Assertions.assertTrue(deleted);
+        assertTrue(deleted);
+    }
+
+    @Test
+    public void duplicateResourceIsDetected() {
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> BioDownloader.builder(resourcePath)
+                .custom("abc.json", new URL("https://example.com/abc.json"))
+                .custom("abc.json", new URL("https://example.com/abc.json"))
+                .hpoJson()
+                .geneOntologyAssociationsHumanCurrentV22()
+                .build());
+
+        assertEquals("Duplicated resource: [abc.json, https://example.com/abc.json]", e.getMessage());
+    }
+
+    @Test
+    @Disabled("To run manually")
+    public void downloadAll() throws Exception {
+        Path target = Paths.get("target").resolve("download");
+        BioDownloader downloader = BioDownloader.builder(target)
+                .gencodeGrch38v38Basic()
+                .gencodeGrch38v38Comprehensive()
+                .gencodeGrch38v39Basic()
+                .gencodeGrch38v39Comprehensive()
+                .hgnc()
+                .geneInfoHuman()
+                .proSite()
+                .medgene2MIM()
+                .hpDiseaseAnnotations()
+                .hpoJson()
+                .hpoObo()
+                .goJson()
+                .goObo()
+                .mondoJson()
+                .mondoOwl()
+                .maxoJson()
+                .maxoOwl()
+                .maxoObo()
+                .ectoJson()
+                .ectoOwl()
+                .geneOntologyAssociationsHumanCurrentV22()
+                .build();
+        downloader.download();
     }
 
     @Test
     @Disabled("Requires internet access to run")
-    public void testPrositeFileDownload() {
-        try {
-            IBioDownloader bioDownloader = new BioDownloaderBuilder(resourcePath).proSite().build();
-            List<File> downloadedFile = bioDownloader.download();
-            Assertions.assertEquals("prosite.dat", downloadedFile.get(0).getName());
-        } catch (FileDownloadException e) {
-            e.printStackTrace();
-        }
+    public void testPrositeFileDownload() throws Exception {
+        BioDownloader bioDownloader = BioDownloaderBuilder.builder(resourcePath).proSite().build();
+        List<File> downloadedFile = bioDownloader.download();
+        assertEquals("prosite.dat", downloadedFile.get(0).getName());
+
         // clean up file
         boolean deleted = resourcePath.resolve("prosite.dat").toFile().delete();
-        Assertions.assertTrue(deleted);
+        assertTrue(deleted);
     }
 }
