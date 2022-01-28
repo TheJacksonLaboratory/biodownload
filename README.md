@@ -1,4 +1,5 @@
 ![CI CD](https://github.com/TheJacksonLaboratory/biodownload/actions/workflows/cicd.yml/badge.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monarchinitiative.biodownload/biodownload/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monarchinitiative.biodownload/biodownload)
 
 # BioDownload
 BioDownload is a small utility library used at the Robinson lab to download HPO, MONDO, UBERON, GO ontologies.   
