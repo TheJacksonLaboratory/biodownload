@@ -108,7 +108,7 @@ public class BioDownloaderTest {
                 .ectoOwl()
                 .geneOntologyAssociationsHumanCurrentV22()
                 .build();
-        List<File> downloaded = downloader.download();
+        downloader.download();
     }
 
     @Test
