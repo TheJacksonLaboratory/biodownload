@@ -78,12 +78,16 @@ class DownloadableResources {
         String urlString = RESOURCE_URLS.getProperty(key);
         try {
             URL url = new URL(urlString);
-            String file = Path.of(url.getPath()).toFile().getName();
+            String file = createFileName(url);
             return new DownloadableResource(file, url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             LOGGER.error("Malformed URL for {}", urlString);
             return null;
         }
+    }
+
+    static String createFileName(URL url) {
+        return Path.of(url.getPath()).toFile().getName();
     }
 }

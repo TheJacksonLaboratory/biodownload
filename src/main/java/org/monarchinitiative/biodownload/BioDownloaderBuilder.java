@@ -175,6 +175,16 @@ public class BioDownloaderBuilder {
     }
 
     /**
+     * Download file from given URL and save it with the default name, as derived from URL
+     *
+     * @param url  URL of source file
+     * @return a builder instance
+     */
+    public BioDownloaderBuilder custom(URL url) {
+        return custom(DownloadableResources.createFileName(url), url);
+    }
+
+    /**
      * Download file from given URL and save it with the given name
      *
      * @param name Name of file to be downloaded to
