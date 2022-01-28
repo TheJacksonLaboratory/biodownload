@@ -18,7 +18,7 @@ For instance, download HPO JSON file and HP disease annotations:
 
 ```java
 builder.hpoJson()
-  .hpDiseaseAnnotations()
+  .hpDiseaseAnnotations();
 ```
 
 Finally, get the `downloader` and download the files:
