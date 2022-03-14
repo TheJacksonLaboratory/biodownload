@@ -143,6 +143,8 @@ class FileDownloader {
         if (conn instanceof HttpURLConnection) {
             // follow redirects to HTTPS
             HttpURLConnection con = (HttpURLConnection) conn;
+            // we set the Accept encoding property to empty to force the download of files unzipped
+            conn.setRequestProperty("Accept-Encoding", "");
             con.connect();
             int responseCode = con.getResponseCode();
             // redirect
