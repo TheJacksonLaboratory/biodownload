@@ -133,6 +133,16 @@ public class BioDownloaderBuilder {
         return this;
     }
 
+    public BioDownloaderBuilder uberonJson() {
+        resources.add(DownloadableResources.UBERON_JSON);
+        return this;
+    }
+
+    public BioDownloaderBuilder genoJson() {
+        resources.add(DownloadableResources.GENO_JSON);
+        return this;
+    }
+
     public BioDownloaderBuilder hpDiseaseAnnotations() {
         resources.add(DownloadableResources.PHENOTYPE_HP);
         return this;
