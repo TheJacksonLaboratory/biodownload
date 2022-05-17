@@ -66,6 +66,8 @@ class DownloadableResources {
 
     static final DownloadableResource ECTO_JSON = createDownloadableResource("ecto.json");
     static final DownloadableResource ECTO_OWL = createDownloadableResource("ecto.owl");
+    static final DownloadableResource UBERON_JSON = createDownloadableResource("uberon.json");
+    static final DownloadableResource GENO_JSON = createDownloadableResource("geno.json");
 
     // Annotations/associations
     static final DownloadableResource GOA_HUMAN_CURRENT_V22_GAFGZ = createDownloadableResource("goa.human.current.v2.2.gaf.gz");

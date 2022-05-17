@@ -106,6 +106,8 @@ public class BioDownloaderTest {
                 .maxoObo()
                 .ectoJson()
                 .ectoOwl()
+                .uberonJson()
+                .genoJson()
                 .geneOntologyAssociationsHumanCurrentV22()
                 .build();
         downloader.download();
