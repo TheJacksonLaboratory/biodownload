@@ -4,7 +4,7 @@
 
     <groupId>org.monarchinitiative.biodownload</groupId>
     <artifactId>biodownload</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     <name>BioDownload</name>
     <description>BioDownload is a small utility library used at the Robinson lab to download HPO, MONDO, UBERON, GO ontologies.</description>
     <url>https://github.com/TheJacksonLaboratory/biodownload</url>
@@ -43,7 +43,7 @@
         <connection>scm:git:git@github.com:TheJacksonLaboratory/biodownload.git</connection>
         <developerConnection>scm:git:git@github.com:TheJacksonLaboratory/biodownload.git</developerConnection>
         <url>scm:git:git@github.com:TheJacksonLaboratory/biodownload.git</url>
-        <tag>v1.1.0</tag>
+        <tag>v${project.version}</tag>
     </scm>
 
     <distributionManagement>
