@@ -60,7 +60,11 @@ public class BioDownloaderTest {
 
     @Test
     public void testNewNameFileDownload() throws Exception {
-        BioDownloader bioDownloader = BioDownloader.builder(resourcePath).overwrite(true).custom("hp_new.json", new URL("https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.json")).build();
+        URL hpoUrl = new URL("http://purl.obolibrary.org/obo/hp.json");
+        BioDownloader bioDownloader = BioDownloader.builder(resourcePath)
+                .overwrite(true)
+                .custom("hp_new.json", hpoUrl)
+                .build();
         List<File> downloadedFile = bioDownloader.download();
         assertEquals("hp_new.json", downloadedFile.get(0).getName());
 
