@@ -49,6 +49,7 @@ class DownloadableResources {
     // Diseases
     static final DownloadableResource MIM2GENE_MEDGEN = createDownloadableResource("mim2gene.medgen");
     static final DownloadableResource PHENOTYPE_HP = createDownloadableResource("hp.disease.annotations");
+    static final DownloadableResource ORPHA2GENE = createDownloadableResource("orpha-to-gene");
 
     // Ontologies
     static final DownloadableResource HP_JSON = createDownloadableResource("hp.json");
