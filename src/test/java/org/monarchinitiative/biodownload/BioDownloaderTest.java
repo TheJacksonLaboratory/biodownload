@@ -87,6 +87,16 @@ public class BioDownloaderTest {
 
     @Test
     @Disabled("To run manually")
+    public void exampleDownload() throws Exception {
+        Path target = Paths.get("target").resolve("download");
+        BioDownloader downloader = BioDownloader.builder(target)
+                .orphaToGene()
+                .build();
+        downloader.download();
+    }
+
+    @Test
+    @Disabled("To run manually")
     public void downloadAll() throws Exception {
         Path target = Paths.get("target").resolve("download");
         BioDownloader downloader = BioDownloader.builder(target)
@@ -99,6 +109,7 @@ public class BioDownloaderTest {
                 .proSite()
                 .medgene2MIM()
                 .hpDiseaseAnnotations()
+                .orphaToGene()
                 .hpoJson()
                 .hpoObo()
                 .goJson()
