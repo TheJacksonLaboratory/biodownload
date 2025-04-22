@@ -4,6 +4,10 @@
 # BioDownload
 BioDownload is a small utility library used at the Robinson lab to download HPO, MONDO, UBERON, GO ontologies.   
 
+# Archived
+
+The repository has been moved to a [new location](https://github.com/P2GX/Biodownload) and the repository was archived.
+
 ## How to use
 Once the library is added to a project, it can be used the following way:
 
