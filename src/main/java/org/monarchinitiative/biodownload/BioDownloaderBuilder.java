@@ -149,6 +149,16 @@ public class BioDownloaderBuilder {
     }
 
     /**
+     * Download Orpha to gene mapping file (<pre>en_product6.xml</pre>).
+     * <p>
+     * See <a href="https://www.orphadata.com/genes">Orphadata</a> website for more info.
+     */
+    public BioDownloaderBuilder orphaToGene() {
+        resources.add(DownloadableResources.ORPHA2GENE);
+        return this;
+    }
+
+    /**
      * Download Hgnc file
      *
      * @return a builder instance
@@ -223,7 +233,7 @@ public class BioDownloaderBuilder {
      */
     private void validate() throws IllegalStateException {
         List<String> errors = new LinkedList<>();
-        if (resources.size() == 0) {
+        if (resources.isEmpty()) {
             errors.add("A name and a URL need to be included. Please pick one of the available options or add your custom name and URL.");
         }
         File destinationDirectoryFile = destination.toFile();
